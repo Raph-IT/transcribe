@@ -4,7 +4,6 @@ import { useAuth } from '../context/AuthContext';
 import { useTheme } from '../context/ThemeContext';
 import {
   Mic,
-  History,
   Settings,
   LogOut,
   Share2,
@@ -37,12 +36,6 @@ const Sidebar = () => {
       icon: Bot,
       href: '/ai-tools',
       isActive: location.pathname === '/ai-tools'
-    },
-    {
-      title: 'Historique',
-      icon: History,
-      href: '/history',
-      isActive: location.pathname === '/history'
     },
     {
       title: 'Archive',

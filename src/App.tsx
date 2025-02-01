@@ -1,24 +1,33 @@
-import React from 'react';
-import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+import React, { Suspense } from 'react';
+import { Routes, Route, Navigate } from 'react-router-dom';
 import { Toaster } from 'react-hot-toast';
 import { AuthProvider, useAuth } from './context/AuthContext';
 import { ThemeProvider } from './context/ThemeContext';
+import LoadingScreen from './components/LoadingScreen';
 
-import Landing from './pages/Landing';
-import Login from './pages/Login';
-import Register from './pages/Register';
-import Dashboard from './pages/Dashboard';
-import Settings from './pages/Settings';
-import Pricing from './pages/Pricing';
-import Transcribe from './pages/Transcribe';
-import Features from './pages/Features';
-import Blog from './pages/Blog';
-import Contact from './pages/Contact';
-import ForgotPassword from './pages/ForgotPassword';
-import ResetPassword from './pages/ResetPassword';
-import PaymentSuccess from './pages/payment/success';
-import TranscriptionDetail from './pages/TranscriptionDetail';
-import AITools from './pages/AITools';
+// Import synchrone des composants critiques
+import Layout from './components/Layout';
+
+// Import lazy des pages
+const Landing = React.lazy(() => import('./pages/Landing'));
+const Login = React.lazy(() => import('./pages/Login'));
+const Register = React.lazy(() => import('./pages/Register'));
+const Dashboard = React.lazy(() => import('./pages/Dashboard'));
+const Settings = React.lazy(() => import('./pages/Settings'));
+const Pricing = React.lazy(() => import('./pages/Pricing'));
+const Transcribe = React.lazy(() => import('./pages/Transcribe'));
+const Features = React.lazy(() => import('./pages/Features'));
+const Blog = React.lazy(() => import('./pages/Blog'));
+const Contact = React.lazy(() => import('./pages/Contact'));
+const ForgotPassword = React.lazy(() => import('./pages/ForgotPassword'));
+const ResetPassword = React.lazy(() => import('./pages/ResetPassword'));
+const PaymentSuccess = React.lazy(() => import('./pages/payment/success'));
+const TranscriptionDetail = React.lazy(() => import('./pages/TranscriptionDetail'));
+const AITools = React.lazy(() => import('./pages/AITools'));
+const Reports = React.lazy(() => import('./pages/Reports'));
+const Archive = React.lazy(() => import('./pages/Archive'));
+const Shared = React.lazy(() => import('./pages/Shared'));
+const NotFound = React.lazy(() => import('./pages/NotFound'));
 
 interface PrivateRouteProps {
   children: React.ReactNode;
@@ -40,118 +49,137 @@ const PublicRoute: React.FC<PublicRouteProps> = ({ children }) => {
 
 const AppRoutes = () => {
   return (
-    <Routes>
-      {/* Public routes */}
-      <Route path="/" element={<Landing />} />
-      <Route path="/features" element={<Features />} />
-      <Route path="/pricing" element={<Pricing />} />
-      <Route path="/blog" element={<Blog />} />
-      <Route path="/contact" element={<Contact />} />
-      <Route
-        path="/login"
-        element={
-          <PublicRoute>
-            <Login />
-          </PublicRoute>
-        }
-      />
-      <Route
-        path="/register"
-        element={
-          <PublicRoute>
-            <Register />
-          </PublicRoute>
-        }
-      />
-      <Route
-        path="/forgot-password"
-        element={
-          <PublicRoute>
-            <ForgotPassword />
-          </PublicRoute>
-        }
-      />
-      <Route
-        path="/reset-password"
-        element={
-          <PublicRoute>
-            <ResetPassword />
-          </PublicRoute>
-        }
-      />
+    <Suspense fallback={<LoadingScreen />}>
+      <Routes>
+        {/* Public routes */}
+        <Route path="/" element={<Landing />} />
+        <Route path="/features" element={<Features />} />
+        <Route path="/pricing" element={<Pricing />} />
+        <Route path="/blog" element={<Blog />} />
+        <Route path="/contact" element={<Contact />} />
+        <Route
+          path="/login"
+          element={
+            <PublicRoute>
+              <Login />
+            </PublicRoute>
+          }
+        />
+        <Route
+          path="/register"
+          element={
+            <PublicRoute>
+              <Register />
+            </PublicRoute>
+          }
+        />
+        <Route
+          path="/forgot-password"
+          element={
+            <PublicRoute>
+              <ForgotPassword />
+            </PublicRoute>
+          }
+        />
+        <Route
+          path="/reset-password"
+          element={
+            <PublicRoute>
+              <ResetPassword />
+            </PublicRoute>
+          }
+        />
 
-      {/* Protected routes */}
-      <Route
-        path="/dashboard"
-        element={
-          <PrivateRoute>
-            <Dashboard />
-          </PrivateRoute>
-        }
-      />
-      <Route
-        path="/transcribe"
-        element={
-          <PrivateRoute>
-            <Transcribe />
-          </PrivateRoute>
-        }
-      />
-      <Route
-        path="/transcription/:id"
-        element={
-          <PrivateRoute>
-            <TranscriptionDetail />
-          </PrivateRoute>
-        }
-      />
-      <Route
-        path="/history"
-        element={
-          <PrivateRoute>
-            <Navigate to="/transcribe" replace />
-          </PrivateRoute>
-        }
-      />
-      <Route
-        path="/settings"
-        element={
-          <PrivateRoute>
-            <Settings />
-          </PrivateRoute>
-        }
-      />
-      <Route
-        path="/payment/success"
-        element={
-          <PrivateRoute>
-            <PaymentSuccess />
-          </PrivateRoute>
-        }
-      />
-      <Route
-        path="/ai-tools"
-        element={
-          <PrivateRoute>
-            <AITools />
-          </PrivateRoute>
-        }
-      />
-    </Routes>
+        {/* Protected routes */}
+        <Route
+          path="/dashboard"
+          element={
+            <PrivateRoute>
+              <Dashboard />
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="/settings"
+          element={
+            <PrivateRoute>
+              <Settings />
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="/transcribe"
+          element={
+            <PrivateRoute>
+              <Transcribe />
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="/reports"
+          element={
+            <PrivateRoute>
+              <Reports />
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="/archive"
+          element={
+            <PrivateRoute>
+              <Archive />
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="/shared"
+          element={
+            <PrivateRoute>
+              <Shared />
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="/transcription/:id"
+          element={
+            <PrivateRoute>
+              <TranscriptionDetail />
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="/ai-tools"
+          element={
+            <PrivateRoute>
+              <AITools />
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="/payment/success"
+          element={
+            <PrivateRoute>
+              <PaymentSuccess />
+            </PrivateRoute>
+          }
+        />
+
+        {/* 404 route - must be the last route */}
+        <Route path="*" element={<NotFound />} />
+      </Routes>
+    </Suspense>
   );
 };
 
-const App = () => {
+function App() {
   return (
-    <Router>
-      <ThemeProvider>
-        <AuthProvider>
-          <AppRoutes />
-          <Toaster position="bottom-right" />
-        </AuthProvider>
-      </ThemeProvider>
-    </Router>
+    <ThemeProvider>
+      <AuthProvider>
+        <AppRoutes />
+        <Toaster position="bottom-right" />
+      </AuthProvider>
+    </ThemeProvider>
   );
-};
+}
 
 export default App;
